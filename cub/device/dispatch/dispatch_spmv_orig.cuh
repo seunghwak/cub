@@ -636,7 +636,7 @@ struct DispatchSpmv
 
             // Get max x-dimension of grid
             int max_dim_x;
-            if (CubDebug(error = cudaDeviceGetAttribute(&max_dim_x, cudaDevAttrMaxGridDimX, device_ordinal))) break;;
+            if (CubDebug(error = cudaDeviceGetAttribute(&max_dim_x, cudaDevAttrMaxGridDimX, device_ordinal))) break;
 
             // Total number of spmv work items
             int num_merge_items = spmv_params.num_rows + spmv_params.num_nonzeros;
@@ -664,12 +664,12 @@ struct DispatchSpmv
 
             // Get grid dimensions
             dim3 spmv_grid_size(
-                CUB_MIN(num_merge_tiles, max_dim_x),
+                CUB_MIN(num_merge_tiles, static_cast<unsigned int>(max_dim_x)),
                 (num_merge_tiles + max_dim_x - 1) / max_dim_x,
                 1);
 
             dim3 segment_fixup_grid_size(
-                CUB_MIN(num_segment_fixup_tiles, max_dim_x),
+                CUB_MIN(num_segment_fixup_tiles, static_cast<unsigned int>(max_dim_x)),
                 (num_segment_fixup_tiles + max_dim_x - 1) / max_dim_x,
                 1);
 
